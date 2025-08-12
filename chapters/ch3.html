@@ -1,0 +1,325 @@
+<!-- ch3.html -->
+<!-- 第三部分：理解线性方程组 -->
+
+<h1>第三部分：理解线性方程组</h1>
+<p>
+    装备了空间、向量和线性变换的几何直觉后，我们现在可以回到线性代数的根源性问题：<strong>求解线性方程组</strong>。我们将看到，$A\mathbf{x}=\mathbf{b}$ 远不止是寻找一组满足等式的数值，它本质上是在高维向量空间中进行导航和理解结构的过程。
+</p>
+
+<hr>
+
+<h2>第五章：核心问题：$A\mathbf{x}=\mathbf{b}$</h2>
+<p>
+    线性方程组 $A\mathbf{x}=\mathbf{b}$ 是整个学科的中心问题。理解它的几何本质，需要我们从两种截然不同的视角来审视它。其中，“列图像”是通往深刻理解的钥匙。
+</p>
+
+<!-- 使用两栏布局对比行图像和列图像 -->
+<div class="two-column-layout">
+    <div>
+        <h3>行图像：平面的交点</h3>
+        <p>
+            这是我们从初等代数中继承的传统视角。方程组中的每一行，都代表一个几何对象。在二维空间中是一条直线，在三维空间中是一个平面。
+        </p>
+        <p>
+            从这个角度看，求解方程组 $A\mathbf{x}=\mathbf{b}$ 就是在寻找所有这些直线（或平面）的<strong>共同交点</strong>。这个视角在低维时很直观，但当维度升高时，我们很难想象多个“超平面”相交的情景。
+        </p>
+    </div>
+    <div>
+        <h3>列图像：线性组合之谜</h3>
+        <p>
+            这是一个更强大、更具揭示性的视角。我们将矩阵-向量乘法 $A\mathbf{x}$ 理解为对矩阵 $A$ 的<strong>列向量的线性组合</strong>，其中向量 $\mathbf{x}$ 的分量是组合的权重。
+        </p>
+        <p>
+            这个问题从“寻找交点”转变为一个全新的问题：“是否存在一种方式，通过伸缩矩阵 $A$ 的两个列向量并将它们相加，最终能够得到目标向量 $\mathbf{b}$？”。未知数 $x_1$ 和 $x_2$ 不再是交点的坐标，而是我们需要的“配方”或“权重”。
+        </p>
+    </div>
+</div>
+
+<div class="highlight-box">
+    <h3>具体例子：一个 2x2 系统的两种视角</h3>
+    <p>
+        让我们来求解这个简单的线性方程组：
+    </p>
+    <p style="text-align: center; font-size: 1.1em; line-height: 1.6;">
+        $2x - y = 1$ <br>
+        $x + y = 5$
+    </p>
+    
+    <div class="two-column-layout">
+        <div>
+            <h5>行图像：两条直线的交点</h5>
+            <p>
+                我们将每个方程看作是定义二维平面上的一条直线。求解这个系统，就是寻找这两条直线的交点。通过简单的代数运算或画图，我们可以找到交点是 $(2, 3)$。这是我们在初等代数中熟悉的视角。
+            </p>
+        </div>
+        <div>
+            <h5>列图像：寻找正确的线性组合</h5>
+            <p>
+                现在，我们将方程组写成矩阵形式 $A\mathbf{x}=\mathbf{b}$：
+            </p>
+            <div class="formula-container">
+                $ \begin{bmatrix} 2 & -1 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 1 \\ 5 \end{bmatrix} $
+            </div>
+            <p>
+                “列图像”提出的问题是：“我需要取多少倍的第一个列向量，加上多少倍的第二个列向量，才能得到目标向量？” 即：
+            </p>
+            <div class="formula-container">
+                $ x \begin{bmatrix} 2 \\ 1 \end{bmatrix} + y \begin{bmatrix} -1 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ 5 \end{bmatrix} $
+            </div>
+            <p>
+                解是 $x=2, y=3$。这个解的几何意义是：将向量 $\begin{bmatrix} 2 \\ 1 \end{bmatrix}$ 拉伸 2 倍，然后加上向量 $\begin{bmatrix} -1 \\ 1 \end{bmatrix}$ 的 3 倍，你最终会准确地落在点 $(1, 5)$ 上。这个视角将求解问题转化为了一个在由 $A$ 的列向量张成的空间中进行导航的问题。
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="highlight-box">
+    <h3>可解性与列空间</h3>
+    <p>
+        一旦我们采纳了列图像，方程组的可解性问题便与“张成空间”的概念直接挂钩。
+    </p>
+    <p>
+        方程组 $A\mathbf{x}=\mathbf{b}$ 有解，当且仅当目标向量 $\mathbf{b}$ 位于矩阵 $A$ 的列向量所张成的空间中。这个空间，正是我们之前定义的<strong>列空间</strong> (Column Space) $C(A)$。
+    </p>
+    <ul>
+        <li><strong>解的存在性：</strong>$\mathbf{b}$ 是否在 $C(A)$ 中？</li>
+        <li><strong>解的唯一性：</strong>如果存在解，构成 $\mathbf{b}$ 的线性组合方式是否唯一？这取决于 $A$ 的列向量是否线性无关。</li>
+    </ul>
+    <p>这个视角的转变是根本性的。它将一个具体的代数求解问题，升华为一个关于向量空间结构的抽象问题。</p>
+</div>
+
+<hr>
+
+<h2>第六章：四个基本子空间</h2>
+<p>
+    每一个 $m \times n$ 的矩阵 $A$ 都定义了四个与之相关的、至关重要的子空间。这<strong>四个基本子空间</strong> (Fundamental Subspaces) 共同提供了一幅关于线性变换 $T(\mathbf{x})=A\mathbf{x}$ 的完整“解剖图”。
+</p>
+
+<div class="definition-box">
+    <h3>四个子空间的定义</h3>
+    <p>
+        给定一个从 $\mathbb{R}^n$ 映射到 $\mathbb{R}^m$ 的矩阵 $A$，其四个基本子空间是：
+    </p>
+    <ul>
+        <li><strong>列空间 (Column Space), $C(A)$：</strong>
+            <br><strong>定义：</strong>由矩阵 $A$ 的所有列向量的线性组合构成的空间。
+            <br><strong>几何意义：</strong>这是线性变换 $A$ 的值域 (Range)，即所有可能的输出向量 $A\mathbf{x}$ 的集合。
+            <br><strong>位置：</strong>它是输出空间 $\mathbb{R}^m$ 的一个子空间。
+        </li>
+        <li><strong>零空间 (Nullspace), $N(A)$：</strong>
+            <br><strong>定义：</strong>所有满足方程 $A\mathbf{x}=\mathbf{0}$ 的输入向量 $\mathbf{x}$ 的集合。
+            <br><strong>几何意义：</strong>这是线性变换 $A$ 的核 (Kernel)，即所有被变换“压扁”到原点的输入向量的集合。
+            <br><strong>位置：</strong>它是输入空间 $\mathbb{R}^n$ 的一个子空间。
+        </li>
+        <li><strong>行空间 (Row Space), $C(A^T)$：</strong>
+            <br><strong>定义：</strong>由矩阵 $A$ 的所有行向量的线性组合构成的空间。这等价于其转置矩阵 $A^T$ 的列空间。
+            <br><strong>几何意义：</strong>它构成了输入空间中对变换结果有贡献的“有效”部分。
+            <br><strong>位置：</strong>它是输入空间 $\mathbb{R}^n$ 的一个子空间。
+        </li>
+        <li><strong>左零空间 (Left Nullspace), $N(A^T)$：</strong>
+            <br><strong>定义：</strong>其转置矩阵 $A^T$ 的零空间，即所有满足 $A^T\mathbf{y}=\mathbf{0}$ 的向量 $\mathbf{y}$ 的集合。
+            <br><strong>几何意义：</strong>它包含了所有与列空间正交的向量。
+            <br><strong>位置：</strong>它是输出空间 $\mathbb{R}^m$ 的一个子空间。
+        </li>
+    </ul>
+</div>
+
+<div class="theorem-box">
+    <h3>线性代数基本定理</h3>
+    <p>这个定理系统地阐述了这四个子空间之间的关系。</p>
+    <h4>第一部分：维度关系</h4>
+    <p>这四个子空间的维度由一个单一的数字——矩阵的<strong>秩 $r$</strong> ——完全确定。</p>
+    <ul>
+        <li>行空间和列空间的维度相等，都等于矩阵的秩 $r$：$\dim(C(A^T)) = \dim(C(A)) = r$。</li>
+        <li>零空间的维度是 $n-r$：$\dim(N(A)) = n-r$。这也被称为秩-零度定理 (Rank-Nullity Theorem)。</li>
+        <li>左零空间的维度是 $m-r$：$\dim(N(A^T)) = m-r$。</li>
+    </ul>
+    <h4>第二部分：正交关系</h4>
+    <p>这四个子空间形成了两对<strong>正交补</strong> (Orthogonal Complements)。</p>
+    <ul>
+        <li>在输入空间 $\mathbb{R}^n$ 中，行空间与零空间正交：$C(A^T) \perp N(A)$。</li>
+        <li>在输出空间 $\mathbb{R}^m$ 中，列空间与左零空间正交：$C(A) \perp N(A^T)$。</li>
+    </ul>
+    <details>
+        <summary>点击展开：变换的完整图景</summary>
+        <div class="details-content">
+            <p>
+                “正交”意味着从一个子空间中任取一个向量，它都与另一个子空间中的所有向量垂直。这种关系并非巧合，而是矩阵乘法定义的直接结果。方程 $A\mathbf{x}=\mathbf{0}$ 的定义是，向量 $\mathbf{x}$ 与矩阵 $A$ 的每一行的点积都为零。由于行空间是由所有行的线性组合构成的，那么向量 $\mathbf{x}$ 必然与行空间中的任何向量都正交。
+            </p>
+            <p>
+                这揭示了线性变换 $A$ 的完整作用图景：它将整个输入空间 $\mathbb{R}^n$ 分解为行空间和零空间。当变换作用时，它只对行空间的分量起作用，并将其映射到列空间中，而将零空间的分量完全“湮灭”：$A\mathbf{x} = A(\mathbf{x}_{\text{row}} + \mathbf{x}_{\text{null}}) = A\mathbf{x}_{\text{row}} + \mathbf{0}$。因此，矩阵 $A$ 的本质作用，就是建立起了其行空间与列空间之间的一一对应关系。
+            </p>
+        </div>
+    </details>
+    
+    <!-- === NEW EXAMPLE 3 START === -->
+    <div class="theorem-box" style="border-color: #17a2b8;">
+        <h3 style="color: #17a2b8;">变换的完整图景：一个具体例子</h3>
+        <p>
+            为了阐释上述图景，让我们看一个从 $\mathbb{R}^3$ 映射到 $\mathbb{R}^2$ 的具体变换。
+            考虑矩阵 $ A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \end{bmatrix} $。
+        </p>
+        <ul>
+            <li><strong>行空间 $C(A^T)$</strong> 是由向量 $\begin{bmatrix} 1 & 2 & 3 \end{bmatrix}$ 张成的直线。</li>
+            <li><strong>零空间 $N(A)$</strong> 是满足 $x+2y+3z=0$ 的平面，与行空间正交。</li>
+        </ul>
+        <p>
+            现在，我们取输入空间 $\mathbb{R}^3$ 中的一个任意向量，例如 $\mathbf{x} = \begin{bmatrix} 3 \\ 2 \\ 1 \end{bmatrix}$。
+        </p>
+        <h5>第一步：将 $\mathbf{x}$ 分解</h5>
+        <p>
+            我们可以将 $\mathbf{x}$ 分解为它在行空间上的投影 $\mathbf{x}_{\text{row}}$ 和在零空间上的分量 $\mathbf{x}_{\text{null}}$。
+        </p>
+        <div class="formula-container">
+            $ \mathbf{x} = \mathbf{x}_{\text{row}} + \mathbf{x}_{\text{null}} = \begin{bmatrix} 5/7 \\ 10/7 \\ 15/7 \end{bmatrix} + \begin{bmatrix} 16/7 \\ 4/7 \\ -8/7 \end{bmatrix} $
+        </div>
+        <p>(这里的 $\mathbf{x}_{\text{row}}$ 是 $\mathbf{x}$ 在向量 $\begin{bmatrix} 1 & 2 & 3 \end{bmatrix}$ 上的正交投影)。</p>
+
+        <h5>第二步：对每个分量应用变换 $A$</h5>
+        <p>
+            我们分别对这两个分量应用变换 $A$：
+        </p>
+        <p><strong>对零空间分量：</strong></p>
+        <div class="formula-container">
+            $ A\mathbf{x}_{\text{null}} = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \end{bmatrix} \begin{bmatrix} 16/7 \\ 4/7 \\ -8/7 \end{bmatrix} = \begin{bmatrix} (16+8-24)/7 \\ (32+16-48)/7 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix} $
+        </div>
+        <p>正如理论所预测的，零空间中的分量被完全“湮灭”了。</p>
+        <p><strong>对行空间分量：</strong></p>
+        <div class="formula-container">
+            $ A\mathbf{x}_{\text{row}} = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \end{bmatrix} \begin{bmatrix} 5/7 \\ 10/7 \\ 15/7 \end{bmatrix} = \begin{bmatrix} (5+20+45)/7 \\ (10+40+90)/7 \end{bmatrix} = \begin{bmatrix} 10 \\ 20 \end{bmatrix} $
+        </div>
+        <p>行空间中的分量被映射到了一个新向量，这个向量位于 $A$ 的列空间中（它是列向量 $\begin{bmatrix} 1 \\ 2 \end{bmatrix}$ 的10倍）。</p>
+        
+        <h5>结论</h5>
+        <p>
+            现在，让我们对原始向量 $\mathbf{x}$ 应用变换：
+        </p>
+        <div class="formula-container">
+            $ A\mathbf{x} = A(\mathbf{x}_{\text{row}} + \mathbf{x}_{\text{null}}) = A\mathbf{x}_{\text{row}} + A\mathbf{x}_{\text{null}} = \begin{bmatrix} 10 \\ 20 \end{bmatrix} + \begin{bmatrix} 0 \\ 0 \end{bmatrix} = \begin{bmatrix} 10 \\ 20 \end{bmatrix} $
+        </div>
+        <p>
+            这个例子完美地展示了变换的本质：输入向量中，只有其“有效部分”（行空间分量）对最终结果有贡献，并被一对一地映射到了输出的列空间中，而其“无效部分”（零空间分量）则被彻底丢弃。
+        </p>
+    </div>
+    <!-- === NEW EXAMPLE 3 END === -->
+    
+    <h4>表2：四个基本子空间 (对于 $m \times n$ 矩阵 $A$，秩为 $r$)</h4>
+    <p>这张表格是理解线性代数基本定理的“一张图胜过千言万语”的体现。</p>
+    <table style="width:100%; border-collapse: collapse;">
+        <thead style="background-color:#f2f2f2;">
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">子空间</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">所在空间</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">维度</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">正交对象</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">SVD基</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">列空间 $C(A)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$\mathbb{R}^m$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$r$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">左零空间 $N(A^T)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$U$ 的前 $r$ 列</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">零空间 $N(A)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$\mathbb{R}^n$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$n-r$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">行空间 $C(A^T)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$V$ 的后 $n-r$ 列</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">行空间 $C(A^T)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$\mathbb{R}^n$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$r$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">零空间 $N(A)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$V$ 的前 $r$ 列</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">左零空间 $N(A^T)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$\mathbb{R}^m$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$m-r$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">列空间 $C(A)$</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">$U$ 的后 $m-r$ 列</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<hr>
+
+<h2>第七章：当精确解不存在时：最小二乘法与投影</h2>
+<p>
+    在现实世界的数据分析中，我们遇到的线性方程组 $A\mathbf{x}=\mathbf{b}$ 往往是无解的。这通常是因为测量误差或模型本身的不完美，导致目标向量 $\mathbf{b}$ 并不精确地落在矩阵 $A$ 的列空间 $C(A)$ 中。在这种情况下，我们无法找到一个精确的 $\mathbf{x}$ 使得 $A\mathbf{x}$ 恰好等于 $\mathbf{b}$。然而，线性代数提供了一种优雅的替代方案：寻找一个“最优”的近似解 $\mathbf{\hat{x}}$，使得 $A\mathbf{\hat{x}}$ 成为列空间中距离 $\mathbf{b}$ 最近的向量。这个最近的向量，正是 $\mathbf{b}$ 在列空间 $C(A)$ 上的<strong>正交投影</strong> (Orthogonal Projection)。
+</p>
+
+<h3>几何问题：寻找“影子”</h3>
+<p>
+    我们可以将这个问题几何化。想象一下，在三维空间中，$C(A)$ 是一个二维平面，而目标向量 $\mathbf{b}$ 是这个平面外的一个点。由于 $\mathbf{b}$ 不在平面上，所以方程 $A\mathbf{x}=\mathbf{b}$ 无解。我们能做的最好的事情，就是找到平面上离 $\mathbf{b}$ 最近的点，这个点可以想象成是当太阳在 $\mathbf{b}$ 正上方时，$\mathbf{b}$ 在平面上投下的“影子”。这个影子点，我们记为 $\mathbf{p}$，就是 $\mathbf{b}$ 在 $C(A)$ 上的正交投影。我们的目标就从求解 $A\mathbf{x}=\mathbf{b}$ 转变为求解 $A\mathbf{\hat{x}}=\mathbf{p}$。
+</p>
+
+<div class="highlight-box">
+    <h3>推导正规方程</h3>
+    <p>
+        定义“最近”的关键在于正交性。向量 $\mathbf{b}$ 与其在子空间 $C(A)$ 上的投影 $\mathbf{p}$ 之间的差值，即误差向量 $\mathbf{e}=\mathbf{b}-\mathbf{p}$，必须与 $C(A)$ 中的所有向量都正交（垂直）。这意味着误差向量 $\mathbf{e}$ 必须与构成 $C(A)$ 的所有基向量——也就是矩阵 $A$ 的所有列向量——都正交。
+    </p>
+    <p>
+        这个几何条件可以用矩阵语言简洁地表达为：$A^T\mathbf{e}=\mathbf{0}$。将 $\mathbf{e}$ 的表达式 $\mathbf{e}=\mathbf{b}-A\mathbf{\hat{x}}$ 代入，我们得到：
+    </p>
+    <p>
+        $ A^T(\mathbf{b}-A\mathbf{\hat{x}})=\mathbf{0} $
+    </p>
+    <p>通过简单的代数整理，我们便得到了著名的<strong>正规方程</strong> (Normal Equations)：</p>
+    <div class="formula-container">
+        $ (A^TA)\mathbf{\hat{x}}=A^T\mathbf{b} $
+    </div>
+    <p>
+        这个新的方程组是关于最优解 $\mathbf{\hat{x}}$ 的。值得注意的是，尽管原始方程 $A\mathbf{x}=\mathbf{b}$ 可能无解，但正规方程 $(A^TA)\mathbf{\hat{x}}=A^T\mathbf{b}$ 总是有解的（只要 $A$ 的列是线性无关的，解就是唯一的）。
+    </p>
+</div>
+
+<h3>应用：线性回归</h3>
+<p>
+    这个过程正是<strong>线性回归</strong> (Linear Regression) 的数学基础。在线性回归中，我们有一系列数据点 $(t_i, y_i)$，并希望找到一条直线 $y=mt+c$ 来最好地拟合这些数据。我们希望找到参数 $m$ 和 $c$，使得这条直线“穿过”这些点。这可以写成一个线性系统：
+    $$ \begin{bmatrix} t_1 & 1 \\ t_2 & 1 \\ \vdots & \vdots \\ t_n & 1 \end{bmatrix} \begin{bmatrix} m \\ c \end{bmatrix} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix} $$
+    这个系统几乎总是无解的，因为数据点很少会完美地落在一条直线上。我们所做的，就是求解这个系统的<strong>最小二乘解</strong> (Least Squares Solution)。我们最小化的误差，正是数据点的实际 $y$ 值与拟合直线上对应 $y$ 值之差的平方和，即误差向量 $\mathbf{e}$ 长度的平方 $\|\mathbf{e}\|^2$。因此，“最小二乘法”这个名字，直接来源于其最小化误差向量长度平方的几何本质。
+</p>
+
+<div class="highlight-box" style="border-color: #28a745;">
+    <h3 style="color: #28a745;">具体计算：拟合一条最佳直线</h3>
+    <p>
+        假设我们有三个数据点 $(t, y)$: $(1, 1)$, $(2, 2.1)$ 和 $(3, 3.8)$。我们希望找到一条直线 $y = c + mt$ 来最好地拟合它们。
+    </p>
+    <p>
+        将这些点代入方程，我们得到一个无解的系统 $A\mathbf{x}=\mathbf{b}$：
+    </p>
+    <div class="formula-container">
+        $ A = \begin{bmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \end{bmatrix}, \quad \mathbf{x} = \begin{bmatrix} c \\ m \end{bmatrix}, \quad \mathbf{b} = \begin{bmatrix} 1 \\ 2.1 \\ 3.8 \end{bmatrix} $
+    </div>
+    <p>
+        因为这三个点不完全在一条直线上，所以 $\mathbf{b}$ 不在 $A$ 的列空间中。我们转而求解正规方程 $(A^TA)\mathbf{\hat{x}}=A^T\mathbf{b}$。
+    </p>
+    <h5>第一步：计算 $A^TA$ 和 $A^T\mathbf{b}$</h5>
+    <div class="formula-container" style="font-size: 0.9em;">
+        $ A^TA = \begin{bmatrix} 1 & 1 & 1 \\ 1 & 2 & 3 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 1 & 2 \\ 1 & 3 \end{bmatrix} = \begin{bmatrix} 3 & 6 \\ 6 & 14 \end{bmatrix} $
+    </div>
+    <div class="formula-container" style="font-size: 0.9em;">
+        $ A^T\mathbf{b} = \begin{bmatrix} 1 & 1 & 1 \\ 1 & 2 & 3 \end{bmatrix} \begin{bmatrix} 1 \\ 2.1 \\ 3.8 \end{bmatrix} = \begin{bmatrix} 6.9 \\ 16.6 \end{bmatrix} $
+    </div>
+
+    <h5>第二步：求解正规方程</h5>
+    <p>
+        我们现在需求解：
+    </p>
+    <div class="formula-container">
+         $ \begin{bmatrix} 3 & 6 \\ 6 & 14 \end{bmatrix} \begin{bmatrix} \hat{c} \\ \hat{m} \end{bmatrix} = \begin{bmatrix} 6.9 \\ 16.6 \end{bmatrix} $
+    </div>
+    <p>
+        解这个 2x2 系统，我们得到 $\hat{m} = 1.4$ 和 $\hat{c} = -0.5$。
+    </p>
+    <p>
+        <strong>结论：</strong> 对于这组数据，最佳拟合直线是 $y = -0.5 + 1.4t$。这就是最小二乘法在实践中的应用——通过投影，将一个无解的问题转化为了一个有最优解的问题。
+    </p>
+</div>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>线性代数：从几何到本质</title>
+    
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 引入 MathJax 用于渲染LaTeX数学公式 -->
+    <!-- 这是让数学公式正确显示的关键 -->
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>线性代数：从几何到本质</h1>
+        <p>一个将几何直觉置于核心的探索之旅</p>
+    </header>
+
+    <nav>
+        <ul>
+            <!-- 我们用 data-page 属性来指定要加载的文件名 (不含 .html) -->
+            <li><a href="#" class="nav-link" data-page="ch1">第一部分：空间与运动</a></li>
+            <li><a href="#" class="nav-link" data-page="ch2">第二部分：线性变换</a></li>
+            <li><a href="#" class="nav-link" data-page="ch3">第三部分：线性方程组</a></li>
+            <li><a href="#" class="nav-link" data-page="ch4">第四部分：深层结构</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- 章节内容将通过 JavaScript 动态加载到这里 -->
+        <article id="content" class="content-container">
+            <!-- 初始加载提示 -->
+            <p>请在上方选择一个部分开始学习。</p>
+        </article>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 线性代数探索</p>
+    </footer>
+
+    <!-- 引入我们自己的JavaScript文件 (必须放在 body 底部) -->
+    <script src="js/main.js"></script>
+</body>
+</html>
